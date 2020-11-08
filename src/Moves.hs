@@ -2,7 +2,7 @@ module Moves where
 
 import Bets
 import Data.Set (Set, empty, fromList, insert, map, singleton, union)
-import {-# SOURCE #-} GameState
+import GameState
 import Plates
 
 data Move = ThrowDice | RoundBet Bet | GameBet Bet | LayPlate PlateState
