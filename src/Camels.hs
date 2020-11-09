@@ -4,7 +4,7 @@ import Control.Lens.Combinators (element)
 import Control.Lens.Operators
 import Data.List
 import qualified Data.Vector as Vec
-import Pieces (PieceState (CamelStack))
+import Pieces (PieceState (..))
 
 newtype Camel = Camel Int
   deriving (Eq, Ord)
@@ -47,14 +47,15 @@ addCamels camels pos pieceStates = (element pos .~ CamelStack a) pieceStates
   where
     a = case pieceStates !! pos of
       CamelStack camelVec -> camelVec Vec.++ camels
+      Empty -> camels
 
 moveCamel :: Camel -> Int -> [PieceState] -> [PieceState]
 moveCamel camel spaces pieceStates = case pieceStates !! camelPos of
   CamelStack camelVec ->
     addCamels movingCamels (camelPos + spaces) $
-      removeCamels standingCamels pieceStates
+      removeCamels movingCamels pieceStates
     where
-      (standingCamels, movingCamels) = splitCamelStack camelVec camel
+      (_, movingCamels) = splitCamelStack camelVec camel
   where
     camelPos = findCamel camel pieceStates
 
