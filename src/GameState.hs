@@ -33,7 +33,7 @@ standardGameState =
 initialGameState :: Int -> GameState
 initialGameState players =
   GameState
-    { pieceState = replicate 10 Empty, --todo find out how many fields
+    { pieceState = CamelStack (Vec.fromList [Camel i | i <- [0 .. 5]]) : replicate 10 Empty, --todo find out how many fields
       diceState = DiceState (Data.Map.Strict.fromList [(Camel i, False) | i <- [0 .. 5]]),
       betState = BetState (Data.Map.Strict.fromList [(Camel i, Bet {camel = Camel i, value = 5}) | i <- [0 .. 5]]),
       playerState = [Player {playerId = i, money = 2, plate = Unused, bets = []} | i <- [0 .. players]],
