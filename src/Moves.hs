@@ -1,4 +1,4 @@
-module Moves where
+module Moves (Move (..), execMove, possibleMoves) where
 
 import Bets
 import Data.Set (Set, empty, fromList, insert, map, singleton, union)

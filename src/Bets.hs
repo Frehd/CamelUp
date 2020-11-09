@@ -1,6 +1,6 @@
-module Bets where
+module Bets (BetState (..), Bet (..), possibleBets, takeBet) where
 
-import Camels
+import {-# SOURCE #-} Camels
 import Data.Map.Strict (Map, adjust, elems, filter)
 import Data.Set (Set, fromList)
 import {-# SOURCE #-} GameState

@@ -1,7 +1,8 @@
-module Bets where
+module Bets (BetState (..), Bet (..)) where
+
+import {-# SOURCE #-} Camels
 import Data.Map.Strict (Map)
 import Money
-import Camels
 
 newtype BetState = BetState {betState :: Map Camel Bet}
 instance Show BetState

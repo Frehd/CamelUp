@@ -1,4 +1,4 @@
-module Plates where
+module Plates (PlayerPlateState (..), PlateState (..), PlateKind (..), addPlate, possiblePlates) where
 
 import Control.Lens.Combinators (element)
 import Control.Lens.Operators

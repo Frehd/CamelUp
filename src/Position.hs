@@ -1,4 +1,4 @@
-module Position where
+module Position (Position (..), coordsOfPos) where
 
 newtype Position = Position Int
   deriving (Eq, Ord, Show)

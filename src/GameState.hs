@@ -1,12 +1,12 @@
 {-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE PartialTypeSignatures #-}
 
 module GameState where
 
 import Bets
-import Camels
-import Data.Map.Strict (Map, foldr, fromList)
+import Camels (Camel (..))
+import Data.Map.Strict (fromList)
 import qualified Data.Vector as Vec
+import {-# SOURCE #-} Dice
 import Pieces
 import Plates
 import Players
@@ -14,18 +14,6 @@ import Position
 
 data GameState = GameState {pieceState :: [PieceState], diceState :: DiceState, betState :: BetState, playerState :: [Player], turn :: Player}
   deriving (Eq, Ord, Show)
-
-newtype DiceState = DiceState {diceState :: Map Camel Bool}
-  deriving (Eq, Ord, Show)
-
-type Dice = Int
-
-roundEnded :: GameState -> Bool
-roundEnded gameState =
-  Data.Map.Strict.foldr
-    (&&)
-    False
-    ((diceState :: DiceState -> Map Camel Bool) $ (diceState :: GameState -> DiceState) gameState)
 
 standardGameState :: GameState
 standardGameState =

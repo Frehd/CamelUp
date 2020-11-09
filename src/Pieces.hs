@@ -1,6 +1,6 @@
-module Pieces where
+module Pieces (PieceState (..)) where
 
-import Camels
+import {-# SOURCE #-} Camels
 import qualified Data.Vector as Vec
 import {-# SOURCE #-} Plates
 import Players

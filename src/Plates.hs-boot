@@ -1,6 +1,6 @@
-module Plates where
-import Position
+module Plates (PlayerPlateState (..), PlateState (..), PlateKind (..)) where
 
+import Position
 
 data PlayerPlateState = Unused | Placed PlateState
 instance Show PlayerPlateState

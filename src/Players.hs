@@ -1,4 +1,4 @@
-module Players where
+module Players (Player (..)) where
 
 import {-# SOURCE #-} Bets
 import Money
