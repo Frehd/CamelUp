@@ -4,6 +4,7 @@ module GameState where
 
 import Bets
 import {-# SOURCE #-} Camels (Camel (..))
+import Data.List (elemIndex)
 import Data.Map.Strict (fromList)
 import qualified Data.Vector as Vec
 import {-# SOURCE #-} Dice
@@ -14,6 +15,15 @@ import Position
 
 data GameState = GameState {pieceState :: [PieceState], diceState :: DiceState, betState :: BetState, playerState :: [Player], turn :: Player}
   deriving (Eq, Ord, Show)
+
+nextTurn :: GameState -> GameState
+nextTurn gameState = gameState {turn = nextPlayer}
+  where
+    nextPlayer = case currentPlayerIndex of
+      Just a | a + 1 < length (playerState gameState) -> playerState gameState !! a
+      Just _ -> head (playerState gameState)
+      where
+        currentPlayerIndex = elemIndex (turn gameState) (playerState gameState)
 
 standardGameState :: GameState
 standardGameState =
