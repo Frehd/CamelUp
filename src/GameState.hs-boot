@@ -3,7 +3,7 @@
 module GameState where
 
 import {-# SOURCE #-} Bets
-import Camels
+import {-# SOURCE #-} Camels
 import Data.Map.Strict (Map)
 import {-# SOURCE #-} Dice
 import Pieces

@@ -1,6 +1,6 @@
 module Dice (DiceState (..), Dice) where
 
-import Camels
+import {-# SOURCE #-} Camels
 import Data.Map.Strict (Map)
 
 newtype DiceState = DiceState {diceState :: Map Camel Bool}

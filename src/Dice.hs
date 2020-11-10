@@ -1,6 +1,6 @@
 module Dice (DiceState (..), Dice, roundEnded, possibleDice, markDiceThrown) where
 
-import Camels
+import {-# SOURCE #-} Camels
 import Data.Map.Strict (Map, foldlWithKey, foldr, insert)
 import Data.Set
 import {-# SOURCE #-} qualified GameState

@@ -3,7 +3,7 @@
 module GameState where
 
 import Bets
-import Camels (Camel (..))
+import {-# SOURCE #-} Camels (Camel (..))
 import Data.Map.Strict (fromList)
 import qualified Data.Vector as Vec
 import {-# SOURCE #-} Dice

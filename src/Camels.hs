@@ -4,7 +4,10 @@ import Control.Lens.Combinators (element)
 import Control.Lens.Operators
 import Data.List
 import qualified Data.Vector as Vec
+import {-# SOURCE #-} GameState
 import Pieces (PieceState (..))
+import Plates
+import Players
 
 newtype Camel = Camel Int
   deriving (Eq, Ord)
@@ -42,27 +45,26 @@ removeCamels removalCamels pieceStates = case pieceStates !! camelPos of
   where
     camelPos = findCamel (Vec.head removalCamels) pieceStates
 
-addCamels :: Vec.Vector Camel -> Int -> [PieceState] -> [PieceState]
-addCamels camels pos pieceStates = (element pos .~ CamelStack a) pieceStates
+addCamels :: Vec.Vector Camel -> Int -> GameState -> GameState
+addCamels camels pos gameState = case GameState.pieceState gameState !! pos of
+  CamelStack camelVec -> gameState {pieceState = insertCamels (camelVec Vec.++ camels)}
+  Empty -> gameState {pieceState = insertCamels camels}
+  Plate Positive plateOwner -> addCamels camels (pos + 1) gameState {playerState = payPlate plateOwner}
+  Plate Negative plateOwner -> addCamels camels (pos -1) gameState {playerState = payPlate plateOwner}
   where
-    a = case pieceStates !! pos of
-      CamelStack camelVec -> camelVec Vec.++ camels
-      Empty -> camels
+    insertCamels = \newCamels -> (element pos .~ CamelStack newCamels) (GameState.pieceState gameState)
+    payPlate = \plateOwner -> (element (playerIndex plateOwner) .~ addMoney 1 plateOwner) (GameState.playerState gameState)
+      where
+        playerIndex = \plateOwner -> case elemIndex plateOwner (GameState.playerState gameState) of
+          Just i -> i
+          Nothing -> -1
 
-moveCamel :: Camel -> Int -> [PieceState] -> [PieceState]
-moveCamel camel spaces pieceStates = case pieceStates !! camelPos of
+moveCamel :: Camel -> Int -> GameState -> GameState
+moveCamel camel spaces gameState = case GameState.pieceState gameState !! camelPos of
   CamelStack camelVec ->
     addCamels movingCamels (camelPos + spaces) $
-      removeCamels movingCamels pieceStates
+      gameState {pieceState = removeCamels movingCamels (GameState.pieceState gameState)}
     where
       (_, movingCamels) = splitCamelStack camelVec camel
   where
-    camelPos = findCamel camel pieceStates
-
-moveCamel' :: Camel -> Int -> [PieceState] -> [PieceState]
-moveCamel' camel spaces pieceStates = case pieceStates !! camelPos of --todo test if the same as moveCamel
-  CamelStack camelVec -> (element camelPos .~ CamelStack standingCamels) pieceStates
-    where
-      (standingCamels, movingCamels) = splitCamelStack camelVec camel --splitCamelStack camelVec camel
-  where
-    camelPos = findCamel camel pieceStates
+    camelPos = findCamel camel (GameState.pieceState gameState)
