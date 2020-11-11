@@ -1,4 +1,6 @@
-module Camels (Camel (..), moveCamel) where
+{-# LANGUAGE LambdaCase #-}
+
+module Camels (Camel (..), moveCamel, lastCamel) where
 
 import Control.Lens.Combinators (element)
 import Control.Lens.Operators
@@ -6,7 +8,7 @@ import Data.List
 import qualified Data.Vector as Vec
 import {-# SOURCE #-} GameState
 import Pieces (PieceState (..))
-import Plates
+import {-# SOURCE #-} Plates
 import Players
 
 newtype Camel = Camel Int
@@ -20,6 +22,16 @@ instance Show Camel where
   show (Camel 4) = "white"
   show (Camel 5) = "orange"
   show (Camel a) = show a ++ " (unknown camelNum)"
+
+lastCamel :: [PieceState] -> Int
+lastCamel pieceStates = case findIndex
+  ( \case
+      CamelStack _ -> True
+      _ -> False
+  )
+  pieceStates of
+  Just a -> a
+  Nothing -> error "Couldn't find the camel you were looking for"
 
 splitCamelStack :: Vec.Vector Camel -> Camel -> (Vec.Vector Camel, Vec.Vector Camel) --(leave behind, camels to move)
 splitCamelStack camelStack camel = (Vec.take camelIndex camelStack, Vec.drop camelIndex camelStack)

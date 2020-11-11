@@ -1,5 +1,6 @@
 module Plates (PlayerPlateState (..), PlateState (..), PlateKind (..), addPlate, possiblePlates) where
 
+import Camels (lastCamel)
 import Control.Lens.Combinators (element)
 import Control.Lens.Operators
 import Data.Set (Set, empty, foldl, fromList, insert, union)
@@ -36,7 +37,7 @@ recursivePlatePositions (Position pos) gameState result =
         recursivePlatePositions (Position (pos + 1)) gameState result
 
 platePlaceable :: Position -> GameState -> Bool
-platePlaceable (Position pos) GameState {pieceState = pieces} | pieces !! pos == Empty =
+platePlaceable (Position pos) GameState {pieceState = pieces} | pieces !! pos == Empty && pos > lastCamel pieces =
   case pieces !!? (pos -1) of
     Just (Plate _ _) -> False
     _ ->
@@ -45,7 +46,7 @@ platePlaceable (Position pos) GameState {pieceState = pieces} | pieces !! pos ==
         _ -> True
 platePlaceable _ _ = False
 
-possiblePlates :: GameState -> Set PlateState --todo only allow to place in front of last camel
+possiblePlates :: GameState -> Set PlateState
 possiblePlates gameState = case plate $ turn gameState of
   Unused ->
     Data.Set.foldl
