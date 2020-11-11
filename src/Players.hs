@@ -14,6 +14,11 @@ data Player = Player {playerId :: PlayerId, money :: Money, plate :: PlayerPlate
 addMoney :: Int -> Player -> Player
 addMoney amount player = player {money = money player + amount}
 
+getPlayerIndex :: PlayerId -> [Player] -> Int
+getPlayerIndex playerId' players = case findIndex (\player -> playerId player == playerId') players of
+  Just a -> a
+  Nothing -> error "Couldn't find the player you were looking for"
+
 getPlayer :: PlayerId -> [Player] -> Player
 getPlayer playerId' players = case findIndex (\player -> playerId player == playerId') players of
   Just a -> players !! a

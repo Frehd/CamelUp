@@ -2,17 +2,27 @@ module Moves (Move (..), execMove, possibleMoves) where
 
 import Bets
 import Camels
+import Control.Lens.Combinators (element)
+import Control.Lens.Operators
 import Data.Set (Set, empty, fromList, insert, map, toList, union)
 import Dice
 import GameState
 import Plates
+import Players
 
 data Move = ThrowDice | RoundBet Bet | GameBet Bet | LayPlate PlateState
   deriving (Eq, Ord, Show)
 
+payDiceMoney :: GameState -> GameState
+payDiceMoney gameState = gameState {GameState.playerState = newPlayerState}
+  where
+    playerIndex = getPlayerIndex (GameState.turn gameState) (GameState.playerState gameState)
+    newPlayerState = (element playerIndex .~ newPlayer) (GameState.playerState gameState)
+    newPlayer = addMoney 1 $ getPlayer (GameState.turn gameState) (GameState.playerState gameState)
+
 throwDice :: GameState -> [GameState]
 throwDice gameState =
-  [ moveCamel camel spaces gameState {GameState.diceState = markDiceThrown camel (GameState.diceState gameState)}
+  [ payDiceMoney $ moveCamel camel spaces gameState {GameState.diceState = markDiceThrown camel (GameState.diceState gameState)}
     | camel <- Data.Set.toList $ possibleDice gameState,
       spaces <- [1 .. 3]
   ]
