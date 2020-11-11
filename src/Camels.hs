@@ -65,9 +65,10 @@ addCamels camels pos gameState = case GameState.pieceState gameState !! pos of
   Plate Negative plateOwner -> addCamels camels (pos -1) gameState {playerState = payPlate plateOwner}
   where
     insertCamels = \newCamels -> (element pos .~ CamelStack newCamels) (GameState.pieceState gameState)
-    payPlate = \plateOwner -> (element (playerIndex plateOwner) .~ addMoney 1 plateOwner) (GameState.playerState gameState)
+    payPlate = \plateOwnerId -> (element (playerIndex plateOwnerId) .~ addMoney 1 (plateOwner plateOwnerId)) (GameState.playerState gameState)
       where
-        playerIndex = \plateOwner -> case elemIndex plateOwner (GameState.playerState gameState) of
+        plateOwner = \plateOwnerId -> GameState.playerState gameState !! playerIndex plateOwnerId
+        playerIndex = \plateOwnerId -> case findIndex (\player -> playerId player == plateOwnerId) (GameState.playerState gameState) of
           Just i -> i
           Nothing -> error "Couldn't find the camel you were looking for"
 

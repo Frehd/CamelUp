@@ -9,7 +9,7 @@ import {-# SOURCE #-} Dice
 import Pieces
 import Players
 
-data GameState = GameState {pieceState :: [PieceState], diceState :: DiceState, betState :: BetState, playerState :: [Player], turn :: Player}
+data GameState = GameState {pieceState :: [PieceState], diceState :: DiceState, betState :: BetState, playerState :: [Player], turn :: PlayerId}
 instance Show GameState
 instance Eq GameState
 instance Ord GameState

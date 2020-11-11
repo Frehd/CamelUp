@@ -19,8 +19,8 @@ data PlateState = PlateState PlateKind Position
 data PlateKind = Positive | Negative
   deriving (Eq, Ord, Show)
 
-addPlate :: [PieceState] -> PlateState -> Player -> [PieceState]
-addPlate pieceStates (PlateState plateKind' pos) player = (element (coordsOfPos pos) .~ (Plate {plateKind = plateKind', owner = player})) pieceStates
+addPlate :: [PieceState] -> PlateState -> PlayerId -> [PieceState]
+addPlate pieceStates (PlateState plateKind' pos) playerId = (element (coordsOfPos pos) .~ (Plate {plateKind = plateKind', owner = playerId})) pieceStates
 
 possiblePlatePositions :: GameState -> Set Position
 possiblePlatePositions gameState = recursivePlatePositions (Position 0) gameState Data.Set.empty
@@ -47,7 +47,7 @@ platePlaceable (Position pos) GameState {pieceState = pieces} | pieces !! pos ==
 platePlaceable _ _ = False
 
 possiblePlates :: GameState -> Set PlateState
-possiblePlates gameState = case plate $ turn gameState of
+possiblePlates gameState = case plate $ getPlayer (turn gameState) (playerState gameState) of
   Unused ->
     Data.Set.foldl
       (\set pos -> Data.Set.union (Data.Set.fromList [PlateState Positive pos, PlateState Negative pos]) set)
