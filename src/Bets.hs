@@ -1,4 +1,4 @@
-module Bets (BetState (..), Bet (..), possibleBets, takeBet, resetBets) where
+module Bets (BetState (..), Bet (..), possibleBets, takeBet, resetBetState) where
 
 import {-# SOURCE #-} Camels
 import Data.Map.Strict (Map, adjust, elems, filter, fromList)
@@ -21,8 +21,8 @@ nextBet (Bet camel' 1) = Bet camel' 0
 takeBet :: Bet -> BetState -> BetState
 takeBet (Bet camel' _) (BetState betState') = BetState $ Data.Map.Strict.adjust nextBet camel' betState'
 
-resetBets :: BetState
-resetBets = BetState (Data.Map.Strict.fromList [(Camel i, Bet {camel = Camel i, value = 5}) | i <- [0 .. 5]])
+resetBetState :: BetState
+resetBetState = BetState (Data.Map.Strict.fromList [(Camel i, Bet {camel = Camel i, value = 5}) | i <- [0 .. 5]])
 
 possibleBets :: GameState -> Set Bet
 possibleBets gameState =
