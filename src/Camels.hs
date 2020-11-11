@@ -51,9 +51,10 @@ findCamel camel pieceStates = case Data.List.findIndex (`containsCamel` camel) p
 
 removeCamels :: Vec.Vector Camel -> [PieceState] -> [PieceState]
 removeCamels removalCamels pieceStates = case pieceStates !! camelPos of
-  CamelStack camelVec -> (element camelPos .~ CamelStack standingCamels) pieceStates
+  CamelStack camelVec | not (Vec.null standingCamels) -> (element camelPos .~ CamelStack standingCamels) pieceStates
     where
       (standingCamels, _) = splitCamelStack camelVec $ Vec.head removalCamels
+  CamelStack _ -> (element camelPos .~ Empty) pieceStates
   where
     camelPos = findCamel (Vec.head removalCamels) pieceStates
 
