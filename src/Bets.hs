@@ -17,6 +17,7 @@ nextBet (Bet camel' 5) = Bet camel' 3
 nextBet (Bet camel' 3) = Bet camel' 2
 nextBet (Bet camel' 2) = Bet camel' 1
 nextBet (Bet camel' 1) = Bet camel' 0
+nextBet bet = error $ "invalid bet: " ++ show bet
 
 takeBet :: Bet -> BetState -> BetState
 takeBet (Bet camel' _) (BetState betState') = BetState $ Data.Map.Strict.adjust nextBet camel' betState'
