@@ -20,7 +20,7 @@ nextTurn :: GameState -> GameState
 nextTurn gameState = gameState {turn = nextPlayer}
   where
     nextPlayer = case currentPlayerIndex of
-      Just a | a + 1 < length (playerState gameState) -> playerState gameState !! a
+      Just a | a + 1 < length (playerState gameState) -> playerState gameState !! (a + 1)
       Just _ -> head (playerState gameState)
       where
         currentPlayerIndex = elemIndex (turn gameState) (playerState gameState)
