@@ -1,7 +1,7 @@
-module Dice (DiceState (..), Dice, roundEnded, possibleDice, markDiceThrown) where
+module Dice (DiceState (..), Dice, roundEnded, possibleDice, markDiceThrown, resetDiceState) where
 
 import {-# SOURCE #-} Camels
-import Data.Map.Strict (Map, foldlWithKey, foldr, insert)
+import Data.Map.Strict (Map, foldlWithKey, foldr, fromList, insert)
 import Data.Set
 import {-# SOURCE #-} qualified GameState
 
@@ -9,6 +9,9 @@ newtype DiceState = DiceState {diceState :: Map Camel Bool}
   deriving (Eq, Ord, Show)
 
 type Dice = Int
+
+resetDiceState :: DiceState
+resetDiceState = DiceState (Data.Map.Strict.fromList [(Camel 0, False)])
 
 roundEnded :: GameState.GameState -> Bool --todo maybe place this in gameState + test it
 roundEnded gameState =
