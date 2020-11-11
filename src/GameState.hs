@@ -3,7 +3,7 @@
 module GameState where
 
 import Bets
-import {-# SOURCE #-} Camels (Camel (..))
+import {-# SOURCE #-} Camels
 import Data.List (findIndex)
 import Data.Map.Strict (fromList)
 import qualified Data.Vector as Vec
@@ -23,6 +23,15 @@ nextTurn gameState = gameState {turn = nextPlayer}
       Just _ -> playerId $ head (playerState gameState)
       where
         currentPlayerIndex = findIndex (\player -> turn gameState == playerId player) (playerState gameState)
+
+nextRound :: GameState -> GameState
+nextRound gameState =
+  gameState
+    { playerState = payBets $ gameState {playerState = resetPlayerBets $ resetPlayerPlates $ playerState gameState},
+      diceState = resetDiceState,
+      betState = resetBetState,
+      pieceState = removePlates $ pieceState gameState
+    }
 
 standardGameState :: GameState
 standardGameState =

@@ -28,6 +28,7 @@ throwDice gameState =
   ]
 
 execMove :: Move -> GameState -> Either (Set GameState) GameState
+execMove move gameState | roundEnded gameState = execMove move $ nextRound gameState
 execMove (LayPlate plateState) gameState = Right $ nextTurn $ gameState {pieceState = addPlate (pieceState gameState) plateState (turn gameState)}
 execMove (RoundBet bet) gameState = Right $ nextTurn $ (gameState :: GameState) {GameState.betState = takeBet bet (GameState.betState gameState)}
 execMove ThrowDice gameState = Left $ Data.Set.fromList $ Prelude.map nextTurn $ throwDice gameState

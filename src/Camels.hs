@@ -1,13 +1,13 @@
 {-# LANGUAGE LambdaCase #-}
 
-module Camels (Camel (..), moveCamel, lastCamel) where
+module Camels (Camel (..), moveCamel, lastCamelIndex, firstCamel, secondCamel) where
 
 import Control.Lens.Combinators (element)
 import Control.Lens.Operators
 import Data.List
 import qualified Data.Vector as Vec
 import {-# SOURCE #-} GameState
-import {-# SOURCE #-} Pieces (PieceState (..))
+import {-# SOURCE #-} Pieces
 import {-# SOURCE #-} Plates
 import Players
 
@@ -23,8 +23,27 @@ instance Show Camel where
   show (Camel 5) = "orange"
   show (Camel a) = show a ++ " (unknown camelNum)"
 
-lastCamel :: [PieceState] -> Int
-lastCamel pieceStates = case findIndex
+firstCamel :: [PieceState] -> Camel
+firstCamel pieceStates = case head $
+  filter
+    ( \case
+        CamelStack _ -> True
+        _ -> False
+    )
+    pieceStates of
+  CamelStack camelVec -> Vec.head camelVec
+  _ -> error "Couldn't find the first camel"
+
+secondCamel :: [PieceState] -> Camel --todo test if the fold is correct
+secondCamel pieceStates =
+  foldl
+    (\camelList (CamelStack camelVec) -> camelList ++ Vec.toList camelVec)
+    []
+    pieceStates
+    !! 100
+
+lastCamelIndex :: [PieceState] -> Int
+lastCamelIndex pieceStates = case findIndex
   ( \case
       CamelStack _ -> True
       _ -> False
