@@ -6,7 +6,7 @@ import {-# SOURCE #-} Bets
 import {-# SOURCE #-} Camels
 import Data.Map.Strict (Map)
 import {-# SOURCE #-} Dice
-import Pieces
+import {-# SOURCE #-} Pieces
 import Players
 
 data GameState = GameState {pieceState :: [PieceState], diceState :: DiceState, betState :: BetState, playerState :: [Player], turn :: PlayerId}

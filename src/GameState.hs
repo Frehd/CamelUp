@@ -8,7 +8,7 @@ import Data.List (findIndex)
 import Data.Map.Strict (fromList)
 import qualified Data.Vector as Vec
 import {-# SOURCE #-} Dice
-import Pieces
+import {-# SOURCE #-} Pieces
 import Plates
 import Players
 

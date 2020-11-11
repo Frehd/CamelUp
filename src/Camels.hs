@@ -7,7 +7,7 @@ import Control.Lens.Operators
 import Data.List
 import qualified Data.Vector as Vec
 import {-# SOURCE #-} GameState
-import Pieces (PieceState (..))
+import {-# SOURCE #-} Pieces (PieceState (..))
 import {-# SOURCE #-} Plates
 import Players
 

@@ -5,7 +5,7 @@ import Control.Lens.Combinators (element)
 import Control.Lens.Operators
 import Data.Set (Set, empty, foldl, fromList, insert, union)
 import {-# SOURCE #-} GameState
-import Pieces
+import {-# SOURCE #-} Pieces
 import Players
 import Position
 import Relude.List
