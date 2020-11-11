@@ -1,4 +1,4 @@
-module Players (Player (..), PlayerId (..), addMoney, getPlayer) where
+module Players (Player (..), PlayerId (..), addMoney, getPlayer, getPlayerIndex) where
 
 import {-# SOURCE #-} Bets
 import Data.List (findIndex)
