@@ -26,7 +26,7 @@ splitCamelStack camelStack camel = (Vec.take camelIndex camelStack, Vec.drop cam
   where
     camelIndex = case Vec.elemIndex camel camelStack of
       Just i -> i
-      Nothing -> -1
+      Nothing -> error "Couldn't find the camel you were looking for"
 
 containsCamel :: PieceState -> Camel -> Bool
 containsCamel (CamelStack camelVec) camel = Vec.elem camel camelVec
@@ -35,7 +35,7 @@ containsCamel _ _ = False
 findCamel :: Camel -> [PieceState] -> Int
 findCamel camel pieceStates = case Data.List.findIndex (`containsCamel` camel) pieceStates of
   Just a -> a
-  Nothing -> -1
+  Nothing -> error "Couldn't find the camel you were looking for"
 
 removeCamels :: Vec.Vector Camel -> [PieceState] -> [PieceState]
 removeCamels removalCamels pieceStates = case pieceStates !! camelPos of
@@ -57,7 +57,7 @@ addCamels camels pos gameState = case GameState.pieceState gameState !! pos of
       where
         playerIndex = \plateOwner -> case elemIndex plateOwner (GameState.playerState gameState) of
           Just i -> i
-          Nothing -> -1
+          Nothing -> error "Couldn't find the camel you were looking for"
 
 moveCamel :: Camel -> Int -> GameState -> GameState
 moveCamel camel spaces gameState = case GameState.pieceState gameState !! camelPos of
